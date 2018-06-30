@@ -22,9 +22,15 @@ $(document).ready(function () {
   var diffTime = '';
   var remainder;
   var minutesTillTrain;
-  var nextTrain; 
-  
-  
+  var nextTrain;
+
+  var trainNameData = '';
+  var destData = '';
+  var arrivalData = '';
+  var freqData = '';
+  var minutesAwayData = '';
+
+
 
   $('#submit').on('click', function (event) {
     event.preventDefault();
@@ -50,31 +56,46 @@ $(document).ready(function () {
     diffTime = moment().diff(moment(timeConverted), "minutes");
 
     // Time apart (remainder)
-			remainder = diffTime % freq;
+    remainder = diffTime % freq;
 
-			// Minute Until Train
-			minutesTillTrain = freq - remainder;
-    		
-    		// Next Train
-			nextTrain = moment().add(minutesTillTrain, "minutes");
-			nextTrainFormat = moment(nextTrain).format('hh:mm');
-		
-		database.ref('/trainSchedule').push({
-			trainName: trainName,
-			destination: dest,
-			arrival: nextTrainFormat,
-			minutesAway: minutesTillTrain,
-			frequency: freq 
+    // Minutes Until Train
+    minutesTillTrain = freq - remainder;
 
-    
+    // Next Train
+    nextTrain = moment().add(minutesTillTrain, "minutes");
+    nextTrainFormat = moment(nextTrain).format('hh:mm');
 
+    database.ref('/trainSchedule').push({
+      trainName: trainName,
+      destination: dest,
+      arrival: nextTrainFormat,
+      minutesAway: minutesTillTrain,
+      frequency: freq
+
+
+    });
 
   });
 
 
+  database.ref('/trainSchedule').on('child_added', function (snap) {
+    
+    trainNameData = snap.val().trainName;
+    destData = snap.val().destination;
+    arrivalData = snap.val().arrival;
+    freqData = snap.val().frequency;
+    minutesAwayData = snap.val().minutesAway;
 
-
-
+    //Data array
+    var dataArray = [trainNameData, destData, freqData, arrivalData, minutesAwayData];
+    var newTr = $('<tr>');
+    for (var i = 0; i < dataArray.length; i++) {
+      var newTd = $('<td>');
+      newTd.text(dataArray[i]);
+      newTd.appendTo(newTr);
+    }
+    $('.table').append(newTr);
+  });
 
 
 
