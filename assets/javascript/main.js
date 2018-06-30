@@ -20,9 +20,11 @@ $(document).ready(function () {
   var freq = '';
   var timeConverted = '';
   var diffTime = '';
+  var remainder;
+  var minutesTillTrain;
+  var nextTrain; 
   
-
-
+  
 
   $('#submit').on('click', function (event) {
     event.preventDefault();
@@ -46,6 +48,23 @@ $(document).ready(function () {
     // Current Time
     var currentTime = moment();
     diffTime = moment().diff(moment(timeConverted), "minutes");
+
+    // Time apart (remainder)
+			remainder = diffTime % freq;
+
+			// Minute Until Train
+			minutesTillTrain = freq - remainder;
+    		
+    		// Next Train
+			nextTrain = moment().add(minutesTillTrain, "minutes");
+			nextTrainFormat = moment(nextTrain).format('hh:mm');
+		
+		database.ref('/trainSchedule').push({
+			trainName: trainName,
+			destination: dest,
+			arrival: nextTrainFormat,
+			minutesAway: minutesTillTrain,
+			frequency: freq 
 
     
 
