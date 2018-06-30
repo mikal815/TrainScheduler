@@ -14,6 +14,20 @@ var config = {
 
   database = firebase.database();
 
+  var trainName = '';
+  var dest = '';
+  var firstTrainTime = ''; 
+  var freq = '';
+  
+
+  $('#submit').on('click',function(event){
+		event.preventDefault();
+		
+		trainName = $('#trainName').val().trim();
+		dest = $('#dest').val().trim();
+		firstTrainTime = $('#firstTrainTime').val().trim();
+		freq = $('#freq').val().trim();
+
 
 
 
