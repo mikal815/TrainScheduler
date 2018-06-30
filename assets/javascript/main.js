@@ -1,8 +1,8 @@
-$(document).ready(function(){
-console.log("working");
+$(document).ready(function () {
+  console.log("working");
 
-// Initialize Firebase
-var config = {
+  // Initialize Firebase
+  var config = {
     apiKey: "AIzaSyBIbgO5NOvtyoZqSR--pkeWpHAfBeKFix8",
     authDomain: "trainscheduler-18a5d.firebaseapp.com",
     databaseURL: "https://trainscheduler-18a5d.firebaseio.com",
@@ -16,19 +16,41 @@ var config = {
 
   var trainName = '';
   var dest = '';
-  var firstTrainTime = ''; 
+  var firstTrainTime = '';
   var freq = '';
+  var timeConverted = '';
+  var diffTime = '';
   
 
-  $('#submit').on('click',function(event){
-		event.preventDefault();
-		
-		trainName = $('#trainName').val().trim();
-		dest = $('#dest').val().trim();
-		firstTrainTime = $('#firstTrainTime').val().trim();
-		freq = $('#freq').val().trim();
 
 
+  $('#submit').on('click', function (event) {
+    event.preventDefault();
+
+    trainName = $('#trainName').val().trim();
+    dest = $('#dest').val().trim();
+    firstTrainTime = $('#firstTrainTime').val().trim();
+    freq = $('#freq').val().trim();
+
+    // Removes input info
+    $('#trainName').val('');
+    $('#dest').val('');
+    $('#firstTrainTime').val('');
+    $('#freq').val('');
+
+
+    //Convert to HH:MM
+    timeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
+    //Converts the firsTimeConverted object into string
+
+    // Current Time
+    var currentTime = moment();
+    diffTime = moment().diff(moment(timeConverted), "minutes");
+
+    
+
+
+  });
 
 
 
